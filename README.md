@@ -1,6 +1,6 @@
 # w251-final-project
 
-##Smart Doorbell##
+## Smart Doorbell ##
 
 * Leverage data streams coming off a smart doorbell like the ring
 * Upload images for parts of the video when there is motion 

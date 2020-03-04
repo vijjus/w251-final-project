@@ -19,11 +19,11 @@ The model listed above is in PyTorch.
 
 | # | Task                                                                            | Person | End Date | Status |
 |---|---------------------------------------------------------------------------------|--------|----------|--------|
-| 1 | Re-implement HW3 to setup a baseline                                            |        |          |        |
+| 1 | Re-implement HW3 to setup a baseline                                            | Vijay/Kat    |          |        |
 | 2 | Modify containers to be able to use PyTorch                                     |Patrick |          |        |
 | 3 | Replace opencv with mtcnn and get HW3 parity                                    |Vijay/Kat|          |        |
-| 4 | Collect dataset of known faces                                                  |        |          |        |
-| 5 | Replay collected mp4 data through model so that faces are cropped and captured  |        |          |        |
-| 6 | Implement torchreid to identify people in the backend container (static images) |        |          |        |
-| 7 | Get #6 to work with streaming data                                              |        |          |        |
+| 4 | Collect dataset of known faces                                                  |All     |          |        |
+| 5 | Replay collected mp4 data through model so that faces are cropped and captured  | Vijay      |          |        |
+| 6 | Implement torchreid to identify people in the backend container (static images) | Patrick       |          |        |
+| 7 | Get #6 to work with streaming data                                              |Vijay/Kat      |          |        |
 | 8 | Implement “linger” detector based on #7                                         |        |          |        |

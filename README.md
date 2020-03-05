@@ -19,9 +19,18 @@ Task 2: We will also use person re-identification to setup an alarm trigger if a
 
 The model listed above is in PyTorch.
 
+https://medium.com/@niruhan/a-practical-guide-to-person-re-identification-using-alignedreid-7683222da644
+
+https://github.com/zlmzju/part_reid/blob/master/demo/demo.ipynb
+
 ### Face Detection ###
 
 We could also implement something simpler to start with, which is face detection. There are some pre-trained models available, such as VGGFace and OpenFace. We will use these, and finetune it with a dataset composed of our faces.
+
+We use the following as a reference:
+
+https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78
+
 
 | # | Task                                                                            | Person | End Date | Status |
 |---|---------------------------------------------------------------------------------|--------|----------|--------|

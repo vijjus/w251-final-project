@@ -11,11 +11,17 @@ We plan to leverage a large part of HW3. We can optionally replace opencv Haar c
 
 Once the image is classified, we will put it in the pipeline for post processing. 
 
+### Person Re-Identification ###
+
 Task 1: Person re-identification task (https://github.com/KaiyangZhou/deep-person-reid). Here, the idea is that our image stream should be able to identify a set of known faces.
  
 Task 2: We will also use person re-identification to setup an alarm trigger if a person not known to us is detected by our stream for 30+ seconds.
 
 The model listed above is in PyTorch.
+
+### Face Detection ###
+
+We could also implement something simpler to start with, which is face detection. There are some pre-trained models available, such as VGGFace and OpenFace. We will use these, and finetune it with a dataset composed of our faces.
 
 | # | Task                                                                            | Person | End Date | Status |
 |---|---------------------------------------------------------------------------------|--------|----------|--------|

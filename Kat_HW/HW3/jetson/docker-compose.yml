@@ -1,0 +1,43 @@
+version: "3.7"
+services:
+
+  mosquitto:
+    image: mqtt-broker
+    container_name: mosquitto
+    restart: always
+    ports:
+      - "1883"
+    networks:
+      - mosquitto
+
+  mqtt-forwarder:
+    image: mqtt-forwarder
+    container_name: mqtt-forwarder
+    command: python mqtt_forwarder.py
+    ports:
+      - "1883"
+    networks:
+      - mosquitto
+    depends_on: 
+      - mosquitto
+    tty: true
+
+  face-detect:
+    image: face-detect
+    container_name: face-detect
+    environment:
+      - DISPLAY
+    volumes:
+      - /tmp:/tmp
+    privileged: true
+    command: bash
+    ports:
+      - "1883"
+    networks:
+      - mosquitto
+    depends_on: 
+      - mqtt-forwarder
+    tty: true
+
+networks:
+  mosquitto:

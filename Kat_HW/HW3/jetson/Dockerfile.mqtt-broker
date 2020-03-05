@@ -1,0 +1,11 @@
+FROM alpine
+LABEL Maintainer="Katayoun Borojerdi <kborojerdi@ischool.berkeley.edu" \
+      Description="Lightweight Mosquitto MQTT server based on Alpine Linux."
+
+RUN apk update && apk upgrade
+RUN apk add mosquitto mosquitto-clients
+
+# Expose MQTT port
+EXPOSE 1883
+
+ENTRYPOINT ["/usr/sbin/mosquitto"]

@@ -1,0 +1,28 @@
+version: "3"
+services:
+
+  mosquitto:
+    image: mqtt-broker
+    container_name: mosquitto
+    restart: always
+    ports:
+      - 1883:1883
+    networks:
+      - mosquitto
+      
+  image-saver:
+    image: image-saver
+    container_name: image-saver
+    command: python mqtt_sub_save.py
+    ports:
+      - "1883"
+    networks:
+      - mosquitto
+    depends_on:
+      - mosquitto
+    tty: true
+    volumes:
+      - /mnt/mybucket:/mnt/mybucket
+
+networks:
+  mosquitto:

@@ -1,0 +1,23 @@
+FROM ubuntu:bionic
+
+# to build this container:
+# docker build -t face_detect -f Dockerfile.opencv-mqtt-face-detect
+# then make sure you're in the X environment:
+# xhost + 
+# to run this container:
+# docker run --privileged -e DISPLAY -v /tmp:/tmp -ti python video_face_detect.py
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    libopencv-dev \
+    mosquitto \
+    mosquitto-clients \
+    python-opencv \
+    python-pip
+
+RUN pip install paho-mqtt
+
+WORKDIR /
+COPY video_face_detect.py .
+COPY haarcascade_frontalface_default.xml .

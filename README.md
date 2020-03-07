@@ -23,6 +23,22 @@ https://medium.com/@niruhan/a-practical-guide-to-person-re-identification-using-
 
 https://github.com/zlmzju/part_reid/blob/master/demo/demo.ipynb
 
+Note: I found another repo with much better documentation and a seemingly better model
+
+https://github.com/layumi/Person_reID_baseline_pytorch
+
+Here is a good summary of the person re-id task:
+
+"Person re-ID can be viewed as an image retrieval problem. Given one query image in Camera A, we need to find the images of the same person in other Cameras. The key of the person re-ID is to find a discriminative representation of the person."
+
+So, if we have multiple cameras, then given an image from camera A, we want to know which images from cameras B, C, D, ... contain the same person. The initial image is called the query image, and the model outputs a gallery that is a collection of images. This is mostly useful when we cannot do reliable face detection (image is from a distance etc).
+
+I was able to download the market1501 dataset, and train a ResNet50 model and also run a test iteration using the instructions from this site. The next goals would be:
+
+* Figure out if we want to include it in our project
+* Get the container bindings figured out
+* Run in Jupyter to experiment with sample images
+
 ### Face Detection ###
 
 We could also implement something simpler to start with, which is face detection. There are some pre-trained models available, such as VGGFace and OpenFace. We will use these, and finetune it with a dataset composed of our faces.

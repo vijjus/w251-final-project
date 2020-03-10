@@ -1,0 +1,33 @@
+FROM ubuntu:bionic
+# FROM nvidia/cuda:10.2-base-ubuntu18.04
+
+# to build this container:
+# docker build -t face_detect -f Dockerfile.face-detect .
+# then make sure you're in the X environment:
+# xhost + 
+# to run this container:
+# docker run --privileged -e DISPLAY -v /tmp:/tmp -ti python mtcnn_video_face_detect.py
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+#    libopencv-dev \
+#    python3-opencv \
+#    python3-pip
+
+# RUN python3 -m pip install torch torchvision
+# RUN python3 -m pip install torch-mtcnn
+
+COPY install-opencv.sh /
+RUN chmod +x /install-opencv.sh && /install-opencv.sh
+
+# RUN python3 -m pip install mtcnn
+# RUN python3 -m pip install tensorflow
+
+# WORKDIR /
+# COPY mtcnn_video_face_detect.py .
+
+# installed python3 -m pip install numpy
+
+# /usr/local/lib/python3.6/dist-packages/cv2/python-3.6
+

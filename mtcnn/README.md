@@ -27,3 +27,5 @@ Collecting opencv-python>=4.1.0 (from mtcnn)
 No matching distribution found for opencv-python>=4.1.0 (from mtcnn)  
   
 I also tried running this in a contianer with openCV built from source. See attached dockerfile. I got the same error.
+
+I'm not sure why even though the openCV version is >= 4.1.0 it will not install. Also I do not know any other way than pip to install mtcnn.

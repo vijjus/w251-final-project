@@ -10,13 +10,13 @@ Docker container I used for HW3 has python 2.7.17 and cv2 3.2.0
 
 My TX2 has python 3
 
-root@kborojerdi-desktop:/data/w251/HW3# python3
-Python 3.6.9 (default, Nov  7 2019, 10:44:02) 
-[GCC 8.3.0] on linux
-Type "help", "copyright", "credits" or "license" for more information.
->>> import cv2
->>> cv2.__version__
-'4.1.1'
+root@kborojerdi-desktop:/data/w251/HW3# python3  
+Python 3.6.9 (default, Nov  7 2019, 10:44:02)  
+[GCC 8.3.0] on linux  
+Type "help", "copyright", "credits" or "license" for more information.  
+    >>> import cv2  
+    >>> cv2.__version__  
+    '4.1.1'  
 
 root@kborojerdi-desktop:/data/w251/HW3# python3 -m pip install mtcnn
 Collecting mtcnn

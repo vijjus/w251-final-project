@@ -58,3 +58,8 @@ https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognit
 | 6 | Implement torchreid to identify people in the backend container (static images) | Patrick       |          |        |
 | 7 | Get #6 to work with streaming data                                              |Vijay/Kat      |          |        |
 | 8 | Implement “linger” detector based on #7                                         |        |          |        |
+| 9 | Use s3fs to mount S3 bucket                                                     |Vijay   |          |        |
+| 10| Experiment with image captioning                                                |Vijay   |          |        |
+
+
+

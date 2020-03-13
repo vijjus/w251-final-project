@@ -29,3 +29,18 @@ No matching distribution found for opencv-python>=4.1.0 (from mtcnn)
 I also tried running this in a contianer with openCV built from source. See attached dockerfile. I got the same error.
 
 I'm not sure why even though the openCV version is >= 4.1.0 it will not install. Also I do not know any other way than pip to install mtcnn. Or to somehow turn of the version checking that it does.
+
+### MTCNN Based Cropping ###
+
+This experiment is being run in the cloud. 
+
+What we need:
+
+* Python3
+* PyTorch
+* OpenCV
+* pytorch-mtcnn
+
+First, source the video from a local file and run it through OpenCV to extract the frames. Then run it through mtcnn to detect faces, crop them and store them.
+
+Next, try the captioning pre-trained model to see what caption it comes up with.

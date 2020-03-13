@@ -47,6 +47,12 @@ We use the following as a reference:
 
 https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78
 
+### Image Captioning ###
+
+During the project review, we were given feedback about exploring the ability to detect more complicated things, such as a person delivering a package. We will experiment with image captioning pre-trained models for this:
+
+https://www.tensorflow.org/tutorials/text/image_captioning#download_and_prepare_the_ms-coco_dataset
+
 
 | # | Task                                                                            | Person | End Date | Status |
 |---|---------------------------------------------------------------------------------|--------|----------|--------|

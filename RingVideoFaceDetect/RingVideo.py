@@ -124,7 +124,7 @@ for k, frame in enumerate(frames):
                 bgr_frame = cv2.rectangle(bgr_frame, (left, top), (right, bottom), (0, 0, 255), 2)
 
                 # Draw a label with a name below the face
-                bgr_frame = cv2.rectangle(bgr_frame, (left, int(bottom_text -25)), (right, bottom), (0, 0, 255), -1)
+                bgr_frame = cv2.rectangle(bgr_frame, (left, int(bottom - 25)), (right, bottom), (0, 0, 255), -1)
                 font = cv2.FONT_HERSHEY_DUPLEX
                 bgr_frame = cv2.putText(bgr_frame, name, (int(left + 6), int(bottom - 6)), font, 0.5, (255, 255, 255), 1)
 

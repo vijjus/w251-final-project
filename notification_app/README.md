@@ -44,3 +44,6 @@ Prior to creating the notification app, we researched other IoT security / surve
      - System -> SMS via Twilio API
    - Python Libraries-> Twillio
    - Pseudo Code: (see py script in directory)
+### Our Approach: TBD ###
+
+Email and SMS notification systems both seem like viable options. I’ve created a Gmail account and Twilio account so that we can experiment with both. Username and password info is in the specific directory readme files. 

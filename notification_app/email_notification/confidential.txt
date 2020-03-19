@@ -1,0 +1,9 @@
+##--------------------------------------------------------
+##--- W251 Final Project 
+##--- Description part 1: inputs for senderemail.py script 
+##--- Description Part 2: Gmail Acct created for notifcation testing (feel free to play around with the account)
+##--- Date: 3/18/2020
+##--- Author: Patrick Castles
+##----------------------------------------------------------
+
+{"recepients": ["patrick_castles@berkeley.edu", "vsingh@ischool.berkeley.edu", "kborojerdi@berkeley.edu"], "myemail": "W251FinalProj@gmail.com", "mypass": "RingW251"}

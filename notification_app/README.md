@@ -12,7 +12,7 @@ In short, the model deciphers the signal (i.e., meaningful motion events) from t
 ### Research on Notification App ### 
 Prior to creating the notification app, we researched other IoT security / surveillance projects to identify best practices. Three relevant and influential examples are shown below.
 
-1.	“IoT Based Smart Home Security System with Alert and Door Access Control Using Smart Phone”
+1.	“IoT Based Smart Home Security System with Alert and Door Access Control Using Smart Phone” - https://www.ijert.org/research/iot-based-smart-home-security-system-with-alert-and-door-access-control-using-smart-phone-IJERTV5IS120325.pdf
   - summary: 
      - custom security system that leverages a Raspberry Pi IoT device to capture images when visitors are detected at an entryway and transmits the image to the user as an email alert via TCP/IP. 
   - IoT Device Configuration: 

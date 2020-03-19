@@ -35,7 +35,7 @@ Prior to creating the notification app, we researched other IoT security / surve
     - Python Libraries: ssmtp
   - Pseudo Code: (See py script in directory)
   
-3.	“How to Make a Smart Baby Monitor with Python, Rasberry Pi, Twillio SMS, and Peripheral Sensors”
+3.	“How to Make a Smart Baby Monitor with Python, Rasberry Pi, Twillio SMS, and Peripheral Sensors” - https://www.twilio.com/blog/smart-baby-monitor-python-raspberry-pi-twilio-sms-peripheral-sensors
    - Summary:  
      - The Raspberry Pi streams video over a local WiFi network, allowing any device on the network to watch the feed. The DS18B20 sensor takes a temperature reading every second, and sends that to the RPi device. The Python code reads that temperature data,  and informs the user via text notification when the temperature in the baby’s crib falls above or below a threshold.
    - IoT Device Configuration

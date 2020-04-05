@@ -34,7 +34,7 @@ decoder_lr = 4e-4  # learning rate for decoder
 grad_clip = 5.  # clip gradients at an absolute value of
 alpha_c = 1.  # regularization parameter for 'doubly stochastic attention', as in the paper
 best_bleu4 = 0.  # BLEU-4 score right now
-print_freq = 100  # print training/validation stats every __ batches
+print_freq = 500  # print training/validation stats every __ batches
 fine_tune_encoder = False  # fine-tune encoder?
 checkpoint = None  # path to checkpoint, None if none
 use_amp = False
@@ -46,8 +46,8 @@ def main():
 
     global best_bleu4, use_amp, epochs_since_improvement, checkpoint, start_epoch, fine_tune_encoder, data_name, word_map
 
-    use_amp = True
-    print("Using amp for mized precision training")
+    #use_amp = True
+    #print("Using amp for mized precision training")
 
     # Read word map
     word_map_file = os.path.join(data_folder, 'WORDMAP_' + data_name + '.json')

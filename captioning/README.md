@@ -17,14 +17,15 @@ Fine tuned a ResNet 101 model on the MSCOCO dataset, using captioning informatio
 * h5py (store image data efficiently)
 * tqdm (monitor progress)
 * nltk (bleu score metric)
+* Nvidia Apex (mixed precision training, FP16)
 
 ### Setting up the Data ###
 
 Download the MSCOCO training and validation data:
 
-Training data: wget http://images.cocodataset.org/zips/train2014.zip (13.5G zipped)
-Validation data: wget http://images.cocodataset.org/zips/val2014.zip (6.6G zipped)
-Andrej Karpathy's captioning data: wget http://cs.stanford.edu/people/karpathy/deepimagesent/caption_datasets.zip (37M zipped)
+* Training data: wget http://images.cocodataset.org/zips/train2014.zip (13.5G zipped)
+* Validation data: wget http://images.cocodataset.org/zips/val2014.zip (6.6G zipped)
+* Andrej Karpathy's captioning data: wget http://cs.stanford.edu/people/karpathy/deepimagesent/caption_datasets.zip (37M zipped)
 
 In our case, the data was downloaded to: /data/caption_data.
 
@@ -68,7 +69,26 @@ This reads the data downloaded and saves the following files –
 * A JSON file for each split with a list of N_c * I caption lengths. The ith value is the length of the ith caption, which corresponds to the i // N_cth image.
 * A JSON file which contains the word_map, the word-to-index dictionary.
 
-Minor changes needed to the files in the repo.
+```
+root@project:/data/caption_data/mscoco/caption_data# ls -lrt
+total 23781408
+-rw-r--r-- 1 root root      155872 Apr  4 19:44 WORDMAP_coco_5_cap_per_img_5_min_word_freq.json
+-rw-r--r-- 1 root root   101351081 Apr  4 20:03 TRAIN_CAPTIONS_coco_5_cap_per_img_5_min_word_freq.json
+-rw-r--r-- 1 root root 22273132544 Apr  4 20:03 TRAIN_IMAGES_coco_5_cap_per_img_5_min_word_freq.hdf5
+-rw-r--r-- 1 root root     2261272 Apr  4 20:03 TRAIN_CAPLENS_coco_5_cap_per_img_5_min_word_freq.json
+-rw-r--r-- 1 root root     4472584 Apr  4 20:04 VAL_CAPTIONS_coco_5_cap_per_img_5_min_word_freq.json
+-rw-r--r-- 1 root root       99829 Apr  4 20:04 VAL_CAPLENS_coco_5_cap_per_img_5_min_word_freq.json
+-rw-r--r-- 1 root root   983042048 Apr  4 20:04 VAL_IMAGES_coco_5_cap_per_img_5_min_word_freq.hdf5
+-rw-r--r-- 1 root root     4472598 Apr  4 20:05 TEST_CAPTIONS_coco_5_cap_per_img_5_min_word_freq.json
+-rw-r--r-- 1 root root   983042048 Apr  4 20:05 TEST_IMAGES_coco_5_cap_per_img_5_min_word_freq.hdf5
+-rw-r--r-- 1 root root       99775 Apr  4 20:05 TEST_CAPLENS_coco_5_cap_per_img_5_min_word_freq.json
+```
+
+### Changes to the Model ###
+
+We changed the encoder module from a ResNet101 to a ResNeXt101_32x8d model, pretrained on the Imagenet database.
+We added Apex mixed precision training for faster training.
+
 
 In my training, we see something like this:
 

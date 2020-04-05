@@ -9,9 +9,10 @@ from models import Encoder, DecoderWithAttention
 from datasets import *
 from utils import *
 from nltk.translate.bleu_score import corpus_bleu
+from apex import amp
 
 # Data parameters
-data_folder = '/data/mscoco/caption_data'  # folder with data files saved by create_input_files.py
+data_folder = '/data/caption_data/mscoco/caption_data'  # folder with data files saved by create_input_files.py
 data_name = 'coco_5_cap_per_img_5_min_word_freq'  # base name shared by data files
 
 # Model parameters
@@ -36,14 +37,17 @@ best_bleu4 = 0.  # BLEU-4 score right now
 print_freq = 100  # print training/validation stats every __ batches
 fine_tune_encoder = False  # fine-tune encoder?
 checkpoint = None  # path to checkpoint, None if none
-
+use_amp = False
 
 def main():
     """
     Training and validation.
     """
 
-    global best_bleu4, epochs_since_improvement, checkpoint, start_epoch, fine_tune_encoder, data_name, word_map
+    global best_bleu4, use_amp, epochs_since_improvement, checkpoint, start_epoch, fine_tune_encoder, data_name, word_map
+
+    use_amp = True
+    print("Using amp for mized precision training")
 
     # Read word map
     word_map_file = os.path.join(data_folder, 'WORDMAP_' + data_name + '.json')
@@ -80,7 +84,18 @@ def main():
 
     # Move to GPU, if available
     decoder = decoder.to(device)
+    # use mixed precision training using Nvidia Apex
+    if use_amp:
+        decoder, decoder_optimizer = amp.initialize(
+                                    decoder, decoder_optimizer, opt_level="O2",
+                                    keep_batchnorm_fp32=True, loss_scale="dynamic")
     encoder = encoder.to(device)
+    if not encoder_optimizer:
+        print("Encoder is not being optimized")
+    elif use_amp:
+        encoder, encoder_optimizer = amp.initialize(
+                                    encoder, encoder_optimizer, opt_level="O2",
+                                    keep_batchnorm_fp32=True, loss_scale="dynamic")
 
     # Loss function
     criterion = nn.CrossEntropyLoss().to(device)
@@ -189,13 +204,27 @@ def train(train_loader, encoder, decoder, criterion, encoder_optimizer, decoder_
         decoder_optimizer.zero_grad()
         if encoder_optimizer is not None:
             encoder_optimizer.zero_grad()
-        loss.backward()
+
+        if use_amp:
+            if encoder_optimizer is not None:
+                with amp.scale_loss(loss, [decoder_optimizer, encoder_optimizer]) as scaled_loss:
+                    scaled_loss.backward()
+            else:
+                with amp.scale_loss(loss, decoder_optimizer) as scaled_loss:
+                    scaled_loss.backward()
+        else:
+            loss.backward()
 
         # Clip gradients
         if grad_clip is not None:
-            clip_gradient(decoder_optimizer, grad_clip)
-            if encoder_optimizer is not None:
-                clip_gradient(encoder_optimizer, grad_clip)
+            if not use_amp:
+                clip_gradient(decoder_optimizer, grad_clip)
+                if encoder_optimizer is not None:
+                    clip_gradient(encoder_optimizer, grad_clip)
+            else:
+                torch.nn.utils.clip_grad_norm_(amp.master_params(decoder_optimizer), grad_clip)
+                if encoder_optimizer is not None:
+                    torch.nn.utils.clip_grad_norm_(amp.master_params(encoder_optimizer), grad_clip)
 
         # Update weights
         decoder_optimizer.step()

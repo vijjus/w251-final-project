@@ -21,7 +21,7 @@ print('Running on device: {}'.format(device))
 # set detector
 # mtcnn = MTCNN(keep_all=True)
 mtcnn = MTCNN(
-    margin=40, min_face_size=40,
+    image_size=160, margin=20, min_face_size=20,
     thresholds=[0.6, 0.7, 0.7], factor=0.709, post_process=False,
     device=device
 )
@@ -32,7 +32,7 @@ filename = sys.argv[1]
 print("Reading from " + filename)
 
 #filename_write = "./FamilyID_2.avi"
-filename_write = sys.argv[2]
+filename_write = "./output_movie/" + sys.argv[2]
 print("Writting to " + filename_write)
 
 # Open the input movie file
@@ -95,8 +95,9 @@ for k, frame in enumerate(frames):
             count += 1
             face_crop = frame.crop(boxes[i])
             arr_img = np.array(face_crop)
+            bgr_image = cv2.cvtColor(arr_img, cv2.COLOR_RGB2BGR)
             image_name = ("./output_faces/test" + str(count) + ".jpg")
-            res = cv2.imwrite(image_name, arr_img)
+            res = cv2.imwrite(image_name, bgr_image)
             if not res:
                 continue
             img = face_recognition.load_image_file(image_name)
@@ -104,6 +105,15 @@ for k, frame in enumerate(frames):
             # image not clear enough for encoding
             # save the image for future analysis
             if len(enc) == 0:
+
+                left = boxes[i][0]
+                bottom = boxes[i][1]
+                right = boxes[i][2]
+                top = boxes[i][3]
+
+                # Draw a box around the face
+                bgr_frame = cv2.rectangle(bgr_frame, (left, top), (right, bottom), (0, 0, 255), 2)
+
                 continue
             # Check all faces at once
             distances = face_recognition.face_distance(known_encodings, enc[0])
@@ -121,12 +131,25 @@ for k, frame in enumerate(frames):
                 top = boxes[i][3]
 
                 # Draw a box around the face
-                bgr_frame = cv2.rectangle(bgr_frame, (left, top), (right, bottom), (0, 0, 255), 2)
+                bgr_frame = cv2.rectangle(bgr_frame, (left, top), (right, bottom), (0, 255, 0), 2)
 
                 # Draw a label with a name below the face
-                bgr_frame = cv2.rectangle(bgr_frame, (left, int(bottom - 25)), (right, bottom), (0, 0, 255), -1)
+                bgr_frame = cv2.rectangle(bgr_frame, (left, int(bottom - 25)), (right, bottom), (0, 255, 0), -1)
                 font = cv2.FONT_HERSHEY_DUPLEX
                 bgr_frame = cv2.putText(bgr_frame, name, (int(left + 6), int(bottom - 6)), font, 0.5, (255, 255, 255), 1)
+            else:
+                left = boxes[i][0]
+                bottom = boxes[i][1]
+                right = boxes[i][2]
+                top = boxes[i][3]
+
+                # Draw a box around the face
+                bgr_frame = cv2.rectangle(bgr_frame, (left, top), (right, bottom), (255, 0, 0), 2)
+
+                # Draw a label with a name below the face
+                bgr_frame = cv2.rectangle(bgr_frame, (left, int(bottom - 25)), (right, bottom), (255, 0, 0), -1)
+                font = cv2.FONT_HERSHEY_DUPLEX
+                bgr_frame = cv2.putText(bgr_frame, "unknown", (int(left + 6), int(bottom - 6)), font, 0.5, (255, 255, 255), 1)
 
     # Write the resulting image to the output video file
     output_movie.write(bgr_frame)

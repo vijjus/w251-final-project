@@ -800,18 +800,16 @@ def retina_scan(vid_path, model, num_images=frames_per_video):
     cap = cv2.VideoCapture(vid_path)
     count = 0
 
-    #bbs = []
-    #bbs_orig = []
-    #raw_images = []
     images = []
-    vid_name = vid_path.split('/')[-1].split('.')[0]
-    #print("working: ",end='')
+    crops = []
+    print("working: ",end='')
     while (True):
         if count >= num_images:
+            print(' done!')
             break
         ret, img = cap.read()
         if not ret:
-            #print(' done!')
+            print(' done!')
             break
 
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -829,7 +827,7 @@ def retina_scan(vid_path, model, num_images=frames_per_video):
 
         for j, boxes in enumerate(picked_boxes):
             if boxes is not None:
-                for box, ladmark, score in zip(boxes,picked_landmarks[j],picked_scores[j]):
+                for box, landmark, score in zip(boxes,picked_landmarks[j],picked_scores[j]):
                     if score > 0.9:
                         count += 1
                         bxs = list(box.cpu().numpy().astype(np.int32).ravel())
@@ -841,18 +839,14 @@ def retina_scan(vid_path, model, num_images=frames_per_video):
                         if crop.shape[0] == 0 or crop.shape[1] == 0:
                             #print("Shape 0, skipping")
                             continue
-                        #print(ladmark)
-                        #bbs_orig.append(bxs)
-                        #bbs.append((x1,y1,x2,y2))
-                        #file_name = folder_c + vid_name + '{:04d}.png'.format(count)
-                        #cv2.imwrite(file_name, crop)
-                        images.append(crop)
-                        #print("!",end='')
+                        images.append(img)
+                        crops.append(crop)
+                        print("!",end='')
                         break
 
     cap.release()
 
-    return images
+    return images, crops
 
 def main():
 
@@ -870,6 +864,7 @@ def main():
         vid_path = input("Enter the path to the video: ")
         vid = vid_path.split('/')[-1]
         fmt = vid.split('.')[-1]
+        vid_name = vid.split('.')[0]
         if fmt != 'mp4':
             print("Only mp4 videos supported, entered {}".format(fmt))
             continue
@@ -878,8 +873,13 @@ def main():
             continue
 
         print("Looking for {} faces".format(frames_per_video))
-        images = retina_scan(vid_path, RetinaFace)
+        images, crops = retina_scan(vid_path, RetinaFace)
         print("{} images found".format(len(images)))
+        for count, img in enumerate(crops):
+            file_name = '/tmp/s3bucket/' + vid_name + '{:04d}.png'.format(count)
+            ret = cv2.imwrite(file_name, img)
+            if ret:
+                print("File {} written to S3".format(file_name))
 
 
 if __name__ == '__main__':

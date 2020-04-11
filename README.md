@@ -38,6 +38,8 @@ We noticed that sometimes MTCNN was not able to to identify a face in an image. 
 
 ### Face Identification ###
 
+### New Person Identification ###
+
 ### Image Captioning ###
 
 During the project review, we were given feedback about exploring the ability to detect more complicated things, such as a person delivering a package. We will experiment with image captioning pre-trained models for this:

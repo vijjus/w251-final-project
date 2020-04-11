@@ -38,6 +38,19 @@ We noticed that sometimes MTCNN was not able to to identify a face in an image. 
 
 ### Face Identification ###
 
+In order to identify known people we use the computer vision task of person identification. We are all familiar with person identification, even though we may not be aware of it. Facebook is often able to tag your friends automatically once you have tagged them a few times in pictures. Similar features are present in photo upload sites such as Amazon Prime photos and Google photos.
+
+After a face detector such as MTCNN or RetinaFace has identified a face, the cropped image of the face is sent to the person identification model. The person identification model is trained to identify 68 facial landmark features.
+
+![alt text](68points.png "68 points that identify a face")
+
+Once these 68 points are identified in an image, the image is processed through a series of simple affine transformations that center the features. This is needed since the face in the original image may be oriented in any arbitrary direction.
+
+Next, in order to compare faces, a deep CNN is trained to extract the above mentioned features from a set of 3 images, 2 of which belong to the same person (image0 and image1), and the third (image2) to a similar looking but different person. The network is trained to maximize the likelihood of predicting image0 and image1 to be the same, and image2 to not be the same. This task requires a lot of training data. OpenFace has made a number of trained models available online, and we used a pre-trained model for our project.
+
+The OpenFace pretrained model can be used through the __face recognition__ python package, which in turn requires __cmake__ and __dlib__. The model provides a __face_encodings()__ API that returns a vector of 128 floats that encodes the input face. It also provides a __compare_faces()__ API that takes in a list of known encodings and the encoding of an unknown face, and returns a list with the index of the matching face marked __True__ if a match is found.
+In our implementation, pictures of known people are located in an S3 folder, __/s3bucket/knowns__. Each image is named with the person whose picture it is. Our code loads the images on startup and stores the names and their encodings in a dictionary. When an image is analyzed, we compare the face cropped from the image and compare it to the encodings of known people using the compare_faces() API mentioned earlier. A notification is sent if a known person is found, else, the entire frame as well as the cropped frame is stores in the S3 bucket for further analysis.
+
 ### New Person Identification ###
 
 ### Image Captioning ###

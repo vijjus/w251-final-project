@@ -28,9 +28,9 @@ In this step, we use a video reader such as __cv2__ or __mmcv__ to split the inp
 
 Next, we used a CNN based face detector called __MTCNN__ (multi-tasked CNN) [3]. This model uses a cascade of 3 CNNs that are called the Proposal Net (P-net), Refine Net (R-net) and Output Net (O-net). Each CNN is trained using a different loss function - a face/no-face log loss for P-net, bounding box L2 loss for R-net and facial landmark L2 loss for O-net.
 
-![alt text](mtccn1.png "MTCNN networks")
+![alt text](mtcnn1.png "MTCNN in action")
 
-![alt text](mtccn2.png "MTCNN networks")
+![alt text](mtcnn2.png "The 3 CNNs in MTCNN")
 
 
 ### Face Identification ###

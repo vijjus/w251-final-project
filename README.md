@@ -22,11 +22,16 @@ Once the image is classified, we will put it in the pipeline for post processing
 
 ### Face Detection ###
 
-We could also implement something simpler to start with, which is face detection. There are some pre-trained models available, such as VGGFace and OpenFace. We will use these, and finetune it with a dataset composed of our faces.
+The first step in our pipeline is face detection.
 
-We use the following as a reference:
+In this step, we use a video reader such as __cv2__ or __mmcv__ to split the input video into constituent frames. Each frame is then passed through a face detector to check for the presence of people in the image. Initially, we used __Haar cascade classifier__ available as part of OpenCV [2] to detect faces. The Haar classifier is machine learnt model that is build using a large number of micro-features, such as edges and corners, and trained with positive and negative class examples. The OpenCV implementation is trained using __Adaboost__. [XXX: Add info on fps with Haar]. However, the Haar classifier is not a neural network.
 
-https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78
+Next, we used a CNN based face detector called __MTCNN__ (multi-tasked CNN) [3]. This model uses a cascade of 3 CNNs that are called the Proposal Net (P-net), Refine Net (R-net) and Output Net (O-net). Each CNN is trained using a different loss function - a face/no-face log loss for P-net, bounding box L2 loss for R-net and facial landmark L2 loss for O-net.
+
+![alt text](mtccn1.jpg "MTCNN networks")
+
+![alt text](mtccn2.jpg "MTCNN networks")
+
 
 ### Face Identification ###
 
@@ -73,3 +78,7 @@ I was able to download the market1501 dataset, and train a ResNet50 model and al
 ## References ##
 
 [1] https://arxiv.org/pdf/1502.03044.pdf
+
+[2] https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
+
+[3] https://arxiv.org/abs/1604.02878

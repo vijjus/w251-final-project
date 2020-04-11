@@ -26,12 +26,15 @@ The first step in our pipeline is face detection.
 
 In this step, we use a video reader such as __cv2__ or __mmcv__ to split the input video into constituent frames. Each frame is then passed through a face detector to check for the presence of people in the image. Initially, we used __Haar cascade classifier__ available as part of OpenCV [2] to detect faces. The Haar classifier is machine learnt model that is build using a large number of micro-features, such as edges and corners, and trained with positive and negative class examples. The OpenCV implementation is trained using __Adaboost__. [XXX: Add info on fps with Haar]. However, the Haar classifier is not a neural network.
 
-Next, we used a CNN based face detector called __MTCNN__ (multi-tasked CNN) [3]. This model uses a cascade of 3 CNNs that are called the Proposal Net (P-net), Refine Net (R-net) and Output Net (O-net). Each CNN is trained using a different loss function - a face/no-face log loss for P-net, bounding box L2 loss for R-net and facial landmark L2 loss for O-net.
+Next, we used a CNN based face detector called __MTCNN__ (multi-tasked CNN) [3]. This model uses a cascade of 3 CNNs that are called the Proposal Net (P-net), Refine Net (R-net) and Output Net (O-net). Each CNN is trained using a different loss function - a face/no-face log loss for P-net, bounding box L2 loss for R-net and facial landmark L2 loss for O-net. 
 
 ![alt text](mtcnn1.png "MTCNN in action")
 
 ![alt text](mtcnn2.png "The 3 CNNs in MTCNN")
 
+We noticed that sometimes MTCNN was not able to to identify a face in an image. After consultation with the course faculty, we decided to give __RetinaFace__ a try. This is a CNN based model that came out in early 2019 and is documented in the paper, RetinaFace: Single-stage Dense Face Localisation in the Wild [4]. This is a single-shot pixel-wise technique that attemps to simultaeously maximize many learning objectives including face score, face box, five facial features etc. This is not yet available through pip, we we have to copy over a pytorch implementation we found online. We found that this model runs extremely slow on CPU, but once offloaded to the GPU, it ran very efficiently. Also compared to MTCNN, it is indeed much better at extractly faces. In some test videos where MTCNN was not able to extract any faces, RetinaFace was able to detect faces in 73 out of 300 frames.
+
+![alt text](retina.png "RetinaFace architecture")
 
 ### Face Identification ###
 
@@ -82,3 +85,5 @@ I was able to download the market1501 dataset, and train a ResNet50 model and al
 [2] https://docs.opencv.org/3.4/db/d28/tutorial_cascade_classifier.html
 
 [3] https://arxiv.org/abs/1604.02878
+
+[4] https://arxiv.org/pdf/1905.00641.pdf

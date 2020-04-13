@@ -106,41 +106,34 @@ Captions are reasonable, but not perfect.
 ### Container ###
 
 ```
-root@project:/data/w251-final-project/captioning# docker build -t captioner .
-Sending build context to Docker daemon  1.188GB
-Step 1/10 : FROM ubuntu
- ---> 4e5021d210f6
-Step 2/10 : ENV DEBIAN_FRONTEND=noninteractive
- ---> Using cache
- ---> 30fbf346fdbc
-Step 3/10 : RUN apt-get -y update
- ---> Using cache
- ---> a305c7cf0e5c
-Step 4/10 : RUN apt-get install -y --fix-missing     build-essential     cmake     gfortran     git     wget     curl     graphicsmagick     libgraphicsmagick1-dev     libatlas-base-dev     libavcodec-dev     libavformat-dev     libgtk2.0-dev     libjpeg-dev     liblapack-dev     libswscale-dev     pkg-config     python3-dev     python3-numpy     python3-pip     python3-opencv     software-properties-common     zip     && apt-get clean && rm -rf /tmp/* /var/tmp/*
- ---> Using cache
- ---> 29dbfdc4ea11
-Step 5/10 : RUN pip3 install torch torchvision
- ---> Using cache
- ---> a7b0141810f1
-Step 6/10 : WORKDIR /root
- ---> Using cache
- ---> 4a239dd5ed2a
-Step 7/10 : COPY caption_app.py .
- ---> Using cache
- ---> ec0c32d8f935
-Step 8/10 : COPY models.py .
- ---> ac1b33283a68
-Step 9/10 : COPY utils.py .
- ---> b034b6608967
-Step 10/10 : COPY BEST_checkpoint_coco_5_cap_per_img_5_min_word_freq.pth.tar caption_model.pth.tar
- ---> 1b59ea8c9299
-Successfully built 1b59ea8c9299
-Successfully tagged captioner:latest
-root@project:/data/w251-final-project/captioning# docker run --rm -v /tmp/s3bucket:/tmp/s3bucket -it captioner 
-root@6a455fae5762:~# ls
-caption_app.py  caption_model.pth.tar  models.py  utils.py
-root@6a455fae5762:~# python3 caption_app.py 
-cpu
-Enter the path to the image: /tmp/s3bucket/pman.jpg 
-<start> a man standing next to a pile of luggage <end> 
+FROM nvcr.io/nvidia/pytorch:19.09-py3
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+WORKDIR /root
+COPY models.py .
+COPY utils.py .
+COPY BEST_checkpoint_coco_5_cap_per_img_5_min_word_freq.pth.tar caption_model.pth.tar
+COPY caption_app.py .
+
+root@project:/data/w251-final-project/captioning# nvidia-docker run --rm --privileged -v /tmp/s3bucket/:/tmp/s3bucket/ -v /tmp/s3kat/:/tmp/s3kat/ --ipc=host -it gpucapt bash
+
+root@c63f5552e545:~# python3 caption_app.py 
+cuda:0
+/opt/conda/lib/python3.6/site-packages/torch/serialization.py:453: SourceChangeWarning: source code of class 'torch.nn.modules.container.Sequential' has changed. you can retrieve the original source code by accessing the object's source attribute or set `torch.nn.Module.dump_patches = True` and use the patch tool to revert the changes.
+  warnings.warn(msg, SourceChangeWarning)
+/opt/conda/lib/python3.6/site-packages/torch/serialization.py:453: SourceChangeWarning: source code of class 'torchvision.models.resnet.Bottleneck' has changed. you can retrieve the original source code by accessing the object's source attribute or set `torch.nn.Module.dump_patches = True` and use the patch tool to revert the changes.
+  warnings.warn(msg, SourceChangeWarning)
+Enter the path to the image: /tmp/s3kat/frame_0b88524c-8305-43fb-9af3-fec6c359ca86.jpg
+<start> a woman is standing in front of a fire hydrant <end> 
+Enter the path to the image: /tmp/s3kat/frame_909d17ed-1404-49e7-9b0d-636a0a8bc154.jpg
+<start> a person standing in front of a fire hydrant <end> 
+Enter the path to the image: /tmp/s3kat/frame_7582e5b7-f941-48e9-bc6b-cbc2fe9b9368.jpg
+<start> a group of people standing around a fire hydrant <end> 
+Enter the path to the image: /tmp/s3kat/frame_7582e5b7-f941-48e9-bc6b-cbc2fe9b9368.jpg
+<start> a group of people standing around a fire hydrant <end> 
+Enter the path to the image: /tmp/s3kat/frame_93150565-fa5a-4cf8-bc1c-ec80b4ff7ed7.jpg
+<start> a group of people standing around a fire hydrant <end> 
+Enter the path to the image: /tmp/s3kat/frame_dcaca287-739c-4d22-bda1-341511fb8623.jpg
+<start> a couple of people standing next to a fire hydrant <end> 
 ```

@@ -2,20 +2,24 @@
 
 ## Idea ##
 
+“Smart” doorbells like Amazon’s Ring have notification capabilities but lack advanced features that allow users to decide whether every motion requires attention. 
+
+Project Objectives
+
+When motion is detected, identify the motion as a known person, unknown person or object and alert the user with a more specific notification
+Allow user to not see alerts for known residents
+Allow the device to learn who people are
+Allow user to be alerted of unknown activity
+
+
 ## Data Pipeline ##
 
-* Leverage data streams coming off a smart doorbell like the ring
-* Upload images for parts of the video when there is motion 
-* Run it through a model that recognizes people in your family in images and possibly classify the object that is moving (ie cat vs car vs delivery guy)
-* Only alert the homeowner when there is motion they care about and possibly classify them. 
- 
-We plan to leverage a large part of HW3. We can optionally replace opencv Haar cascade filters with a pre-trained CNN such as mtcnn.
-
-Once the image is classified, we will put it in the pipeline for post processing. 
-
-* Figure out if we want to include it in our project
-* Get the container bindings figured out
-* Run in Jupyter to experiment with sample images
+1.  Ring device captures 30s videos when motion is detected and 60s videos when doorbell is rung. Videos are automatically uploaded to the Ring cloud. We used a Python API to extract videos from ring cloud and store them in ibm cloud.  
+2. Python API has to be manually initiated. Future enhancement would be to hook up directly to the Ring video stream ( which will likely require an Amazon/Ring SDK)
+3. Created two IBM cloud buckets, one for incoming videos from ring cloud, and one for processes videos. Processed videos which include boxes around detected faces and labeled faced recognized from already known faces. 
+4. The Watchdog.py runs on an ibm virtual machine with the buckets mounted. It detects any new file added to the incoming video bucket and initiates the RingVideo.py which does detection and recognition. For known faces it send information to the notification system
+5. Alternatively for unidentified faces we have it setup where we capture several full frames and pass it onto our captioning algorithm. That output is then sent to the notification system. 
+6. Lastly, we also have a known face labeling capability that has not been fully incorporated into the pipeline. This allows the user to self label frequently found unidentified faces. These would be fed back into the known faces folder used for face recognition. 
 
 ## Implementation ##
 

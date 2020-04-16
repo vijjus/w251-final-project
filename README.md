@@ -4,12 +4,12 @@
 
 “Smart” doorbells like Amazon’s Ring have notification capabilities but lack advanced features that allow users to decide whether every motion requires attention. 
 
-Project Objectives
+#### Project Objectives
 
-When motion is detected, identify the motion as a known person, unknown person or object and alert the user with a more specific notification
-Allow user to not see alerts for known residents
-Allow the device to learn who people are
-Allow user to be alerted of unknown activity
+* When motion is detected, identify the motion as a known person, unknown person or object and alert the user with a more specific notification
+* Allow user to not see alerts for known residents
+* Allow the device to learn who people are
+* Allow user to be alerted of unknown activity
 
 
 ## Data Pipeline ##

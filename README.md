@@ -14,6 +14,8 @@ Allow user to be alerted of unknown activity
 
 ## Data Pipeline ##
 
+https://github.com/vijjus/w251-final-project/blob/master/_back_images/Screen%20Shot%202020-04-15%20at%209.24.10%20PM.png
+
 1.  Ring device captures 30s videos when motion is detected and 60s videos when doorbell is rung. Videos are automatically uploaded to the Ring cloud. We used a Python API to extract videos from ring cloud and store them in ibm cloud.  
 2. Python API has to be manually initiated. Future enhancement would be to hook up directly to the Ring video stream ( which will likely require an Amazon/Ring SDK)
 3. Created two IBM cloud buckets, one for incoming videos from ring cloud, and one for processes videos. Processed videos which include boxes around detected faces and labeled faced recognized from already known faces. 

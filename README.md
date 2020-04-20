@@ -59,6 +59,10 @@ In our implementation, pictures of known people are located in an S3 folder, __/
 
 ### New Person Identification ###
 
+We use the face identification package that use keypoint detection to person an offline clustering of previously unidentified faces and if we find a number of images of the same person, we prompt the user to identify the person by name. This could be a visiting relative or a neighbor that visits often. If the person is identified, then a collection (1-3) of the images of this person are stored in the *knowns* folder with the person's name. The application cache is updated so that this person is now considered a known person, and all policies related to known people apply to this new person.
+
+In our subfolder **new_faces**, please see the notebook *new_faces.ipynb* for an example of this functionality in action.
+
 ### Image Captioning ###
 
 During the project review, we were given feedback about exploring the ability to detect more complicated things, such as a person delivering a package. We will experiment with image captioning pre-trained models for this:

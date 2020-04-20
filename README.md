@@ -65,7 +65,17 @@ In our subfolder **new_faces**, please see the notebook *new_faces.ipynb* for an
 
 ### Image Captioning ###
 
-During the project review, we were given feedback about exploring the ability to detect more complicated things, such as a person delivering a package. We will experiment with image captioning pre-trained models for this:
+During the mid term project review, we were given feedback about exploring the ability to detect more complicated things, such as a person delivering a package. 
+
+The smart doorbell collects videos and uploads them to the cloud if the on device model indicates that an unknown person is at the door. In our data pipeline, the Facial Detection module receives the video stream, and splits the video stream into frames and uses a face detection model to look for faces in the stream of faces. Once the frames are compared with the library of known faces/people, we have a sequence of frames in the case we have an unrecognized person. An additional piece of ‘smartness’ we want to add to our project is the ability to inform the owner about the activity that the unknown person above is doing. For e.g. the unknown person could be the mailman, and he may be dropping off mail. More interestingly, the unknown person could be a thief and he may be stealing a package that was left at the door. The latter represents a growing problem with the increasing use of online shopping. 
+
+According to an assessment done by security.org, 8 out of 10 American adults are online shoppers, and Americans spend close to $600B on online shopping. The same study reports that 38% of their survey respondents report being victims of package theft. This fact is also reflected empirically in our own neighborhoods. Everyday, platforms such as Nextdoor, people complain about package thefts. In many cases, people have managed to capture images of the perpetrators in the act. However, perps often know where cameras or surveillance equipment is installed, and avoid a direct view of their faces through the use of hoodies, scarves etc.
+
+In light of the above, our solution addresses this issue by attempting to identify the act of theft instead of trying to identify or capture images of the thief. When such an act is detected, a notification is sent in real time to the homeowner, who can take immediate action.
+
+The essence of the activity detection is an image captioning model. The idea of image captioning is simple - it combines the computer vision task of object detection with an NLP text generation model that is trained to label the objects identified in the image. The idea is explained in the paper, Show, Attend and Tell: Neural Image Caption Generation with Visual Attention [1].
+
+We will experiment with image captioning pre-trained models for this:
 
 https://www.tensorflow.org/tutorials/text/image_captioning#download_and_prepare_the_ms-coco_dataset
 
@@ -76,17 +86,19 @@ Associated captions:
 * "a man with a red helmet on a small moped on a dirt road"
 * "man riding a motor bike on a dir road on the countryside"
 
-The smart doorbell collects videos and uploads them to the cloud if the on device model indicates that an unknown person is at the door. In our data pipeline, the Facial Detection module receives the video stream, and splits the video stream into frames and uses a face detection model to look for faces in the stream of faces. Once the frames are compared with the library of known faces/people, we have a sequence of frames in the case we have an unrecognized person. An additional piece of ‘smartness’ we want to add to our project is the ability to inform the owner about the activity that the unknown person above is doing. For e.g. the unknown person could be the mailman, and he may be dropping off mail. More interestingly, the unknown person could be a thief and he may be stealing a package that was left at the door. The latter represents a growing problem with the increasing use of online shopping. 
-
-According to an assessment done by security.org, 8 out of 10 American adults are online shoppers, and Americans spend close to $600B on online shopping. The same study reports that 38% of their survey respondents report being victims of package theft. This fact is also reflected empirically in our own neighborhoods. Everyday, platforms such as Nextdoor, people complain about package thefts. In many cases, people have managed to capture images of the perpetrators in the act. However, perps often know where cameras or surveillance equipment is installed, and avoid a direct view of their faces through the use of hoodies, scarves etc.
-
-In light of the above, our solution addresses this issue by attempting to identify the act of theft instead of trying to identify or capture images of the thief. When such an act is detected, a notification is sent in real time to the homeowner, who can take immediate action.
-
-The essence of the activity detection is an image captioning model. The idea of image captioning is simple - it combines the computer vision task of object detection with an NLP text generation model that is trained to label the objects identified in the image. The idea is explained in the paper, Show, Attend and Tell: Neural Image Caption Generation with Visual Attention [1].
-
-The paper describes the construction of the model:
+In the subfolder **captioning**, please find additional details about our work with this model, including training and an inference example.
 
 ### Additional Investigation: Person Re-Identification ###
+
+During the project, we considered the additional task of Person Re-ID. This task is extensively used in video surveillance. Note that we did not pursue this work, since ideally this task needs images from multiple cameras from different angles.
+
+Here is a good summary of the person re-id task:
+
+"Person re-ID can be viewed as an image retrieval problem. Given one query image in Camera A, we need to find the images of the same person in other Cameras. The key of the person re-ID is to find a discriminative representation of the person."
+
+So, if we have multiple cameras, then given an image from camera A, we want to know which images from cameras B, C, D, ... contain the same person. The initial image is called the query image, and the model outputs a gallery that is a collection of images. This is mostly useful when we cannot do reliable face detection (image is from a distance etc).
+
+We were able to download the market1501 dataset, and train a ResNet50 model and also run a test iteration using the instructions from this site.
 
 Task 1: Person re-identification task (https://github.com/KaiyangZhou/deep-person-reid). Here, the idea is that our image stream should be able to identify a set of known faces.
  
@@ -98,17 +110,13 @@ https://medium.com/@niruhan/a-practical-guide-to-person-re-identification-using-
 
 https://github.com/zlmzju/part_reid/blob/master/demo/demo.ipynb
 
-Note: I found another repo with much better documentation and a seemingly better model
+Note: We found another repo with much better documentation and a seemingly better model
 
 https://github.com/layumi/Person_reID_baseline_pytorch
 
-Here is a good summary of the person re-id task:
+## Conclusion ##
 
-"Person re-ID can be viewed as an image retrieval problem. Given one query image in Camera A, we need to find the images of the same person in other Cameras. The key of the person re-ID is to find a discriminative representation of the person."
-
-So, if we have multiple cameras, then given an image from camera A, we want to know which images from cameras B, C, D, ... contain the same person. The initial image is called the query image, and the model outputs a gallery that is a collection of images. This is mostly useful when we cannot do reliable face detection (image is from a distance etc).
-
-I was able to download the market1501 dataset, and train a ResNet50 model and also run a test iteration using the instructions from this site. The next goals would be:
+We were able to make significant progress in our task to make a video door camera such the Ring smarter. We were able to get face detection working with multiple models, and get face identification working as well. We got a sense of the computation, accuracy and latency characteristics of our models. We also trained a model to perfom image captioning, but consluded that the dataset for training this model needs to be bolstered with additional training data that has more captioned images of people delivering and picking up packages from doorsteps and porches.
 
 ## References ##
 

@@ -1,5 +1,9 @@
 # Smart Doorbell: w251-final-project
 
+## Team ##
+
+Vijay Singh, Patrick Castles & Kat Borojerdi
+
 ## Idea ##
 
 “Smart” doorbells like Amazon’s Ring have notification capabilities but lack advanced features that allow users to decide whether every motion requires attention. 
